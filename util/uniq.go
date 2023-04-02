@@ -1,8 +1,9 @@
 package main
 
 import (
-	"files/unique"
 	"flag"
+
+	"github.com/lecranck/unique"
 )
 
 type Options struct {
@@ -16,7 +17,7 @@ type Options struct {
 	output_file string
 }
 
-func (opt *Options) parse_options(c, d, u bool, f, s int, i bool) {
+func (opt *Options) ParseOptions(c, d, u bool, f, s int, i bool) {
 
 	// check if -c -d -u used at the same time
 	count := 0
@@ -41,7 +42,7 @@ func (opt *Options) parse_options(c, d, u bool, f, s int, i bool) {
 func main() {
 	var c, d, u, i bool
 	var f, s int
-	var input_file, output_file string
+	var inputFile, outputFile string
 
 	// set flags
 	flag.BoolVar(&c, "c", false, "occurrence count")
@@ -56,33 +57,33 @@ func main() {
 	files := flag.Args()
 
 	if len(files) == 1 {
-		input_file = files[0]
+		inputFile = files[0]
 	} else {
 		if len(files) == 2 {
-			input_file = files[0]
-			output_file = files[1]
+			inputFile = files[0]
+			outputFile = files[1]
 		}
 	}
 
 	// fill struct with arguments
 	options := Options{}
-	options.parse_options(c, d, u, f, s, i)
+	options.ParseOptions(c, d, u, f, s, i)
 
 	// data input
-	input_data := make([]string, 20)
+	inputData := make([]string, 20)
 	source := "stdin"
 
-	if input_file != "" {
-		source = input_file
+	if inputFile != "" {
+		source = inputFile
 	}
 
-	input_data = read_from(source)
-	output_data := unique.GetOutput(input_data, options.c, options.d, options.u, options.f, options.s, options.i)
+	inputData = readFrom(source)
+	output_data := unique.GetOutput(inputData, options.c, options.d, options.u, options.f, options.s, options.i)
 
 	// data output
-	if output_file != "" {
-		write_into(output_file, output_data)
+	if outputFile != "" {
+		writeInto(outputFile, output_data)
 	} else {
-		write_stdout(output_data)
+		writeStdout(output_data)
 	}
 }

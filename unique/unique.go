@@ -8,7 +8,7 @@ import (
 )
 
 // returns the result of comparing to strings according to given arguments
-func compare(str1, str2 string, f, s int, ignore_reg bool) bool {
+func stringsAreEqual(str1, str2 string, f, s int, ignore_reg bool) bool {
 	// -i
 	if ignore_reg {
 		str1 = strings.ToUpper(str1)
@@ -63,14 +63,14 @@ func compare(str1, str2 string, f, s int, ignore_reg bool) bool {
 }
 
 // map(line => occurrence count)
-func fill_map(lines map[string]int, text []string, f, s int, i bool) map[int]string {
+func fillMap(lines map[string]int, text []string, f, s int, i bool) map[int]string {
 	// map(index of line => line)
 	index := make(map[int]string)
 	counter := 0
 	for _, elem := range text {
 		flag := false
 		for line := range lines {
-			if compare(elem, line, f, s, i) {
+			if stringsAreEqual(elem, line, f, s, i) {
 				flag = true
 				lines[line]++
 			}
@@ -85,7 +85,7 @@ func fill_map(lines map[string]int, text []string, f, s int, i bool) map[int]str
 	return index
 }
 
-func pick_lines(data map[string]int, index_map map[int]string, c, d, u bool) []string {
+func pickLines(data map[string]int, index_map map[int]string, c, d, u bool) []string {
 	index_values := make([]int, 0, len(data))
 
 	// sort keys of the index map (index of line => line) to access data map (line => count) in the rigth order
@@ -138,8 +138,8 @@ func GetOutput(input []string, c, d, u bool, f, s int, i bool) []string {
 
 	data := make(map[string]int)
 	// get index map for the lines
-	index_map := fill_map(data, input, f, s, i)
+	index_map := fillMap(data, input, f, s, i)
 	// get strings in the right order according to the mode chosen (-c | -d | -u)
-	output := pick_lines(data, index_map, c, d, u)
+	output := pickLines(data, index_map, c, d, u)
 	return output
 }

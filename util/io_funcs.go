@@ -8,13 +8,13 @@ import (
 	"strings"
 )
 
-func check_error(err error) {
+func checkError(err error) {
 	if err != nil {
 		panic(err)
 	}
 }
 
-func read_from(file string) []string {
+func readFrom(file string) []string {
 	var data []string
 
 	// set default reader
@@ -22,13 +22,13 @@ func read_from(file string) []string {
 
 	// set file reader
 	if file != "stdin" {
-		read_file, err := os.Open(file)
+		readFile, err := os.Open(file)
 		if err != nil {
 			panic("There is no such file")
 		}
-		defer read_file.Close()
+		defer readFile.Close()
 
-		reader = bufio.NewReader(read_file)
+		reader = bufio.NewReader(readFile)
 	}
 	// read lines
 	for {
@@ -37,46 +37,27 @@ func read_from(file string) []string {
 		if err == io.EOF {
 			break
 		} else {
-			check_error(err)
+			checkError(err)
 		}
 	}
 	return data
 }
 
-func write_into(file string, data []string) {
-	write_file, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE, 0600)
+func writeInto(file string, data []string) {
+	writeFile, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE, 0600)
 
-	defer write_file.Close()
+	defer writeFile.Close()
 
-	check_error(err)
+	checkError(err)
 
 	for _, line := range data {
-		_, err := write_file.Write([]byte(line + "\n"))
-		check_error(err)
+		_, err := writeFile.Write([]byte(line + "\n"))
+		checkError(err)
 	}
 }
 
-/*func write_into(file string, data []string) {
-	// set default reader
-	writer := bufio.NewWriter(os.Stdout)
-
-	// set file reader
-	if file != "stdout" {
-		write_file, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE, 0600)
-		defer write_file.Close()
-		check_error(err)
-
-		writer = bufio.NewWriter(write_file)
-	}
-	// read lines
-	for _, line := range data {
-		_, err := writer.WriteString(line)
-		check_error(err)
-	}
-}*/
-
-func write_stdout(data []string) {
-	fmt.Println("----OUTPUT----")
+func writeStdout(data []string) {
+	fmt.Println("\n----OUTPUT----")
 	for _, line := range data {
 		fmt.Println(line)
 	}
