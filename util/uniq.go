@@ -3,41 +3,8 @@ package main
 import (
 	"flag"
 
-	"github.com/lecranck/unique"
+	"github.com/lecrank/unique"
 )
-
-type Options struct {
-	c           bool
-	d           bool
-	u           bool
-	i           bool
-	f           int
-	s           int
-	input_file  string
-	output_file string
-}
-
-func (opt *Options) ParseOptions(c, d, u bool, f, s int, i bool) {
-
-	// check if -c -d -u used at the same time
-	count := 0
-	for _, flag := range []bool{c, d, u} {
-		if flag {
-			count++
-		}
-	}
-
-	if count > 1 {
-		panic("Wrong usage!\n\nCorrect: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
-	}
-
-	opt.c = c
-	opt.d = d
-	opt.u = u
-	opt.i = i
-	opt.f = f
-	opt.s = s
-}
 
 func main() {
 	var c, d, u, i bool
@@ -66,7 +33,7 @@ func main() {
 	}
 
 	// fill struct with arguments
-	options := Options{}
+	options := unique.Options{}
 	options.ParseOptions(c, d, u, f, s, i)
 
 	// data input
@@ -78,7 +45,7 @@ func main() {
 	}
 
 	inputData = readFrom(source)
-	output_data := unique.GetOutput(inputData, options.c, options.d, options.u, options.f, options.s, options.i)
+	output_data := unique.FindUnique(inputData, options)
 
 	// data output
 	if outputFile != "" {

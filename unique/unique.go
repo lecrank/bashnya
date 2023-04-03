@@ -7,6 +7,39 @@ import (
 	"unicode/utf8"
 )
 
+type Options struct {
+	c           bool
+	d           bool
+	u           bool
+	i           bool
+	f           int
+	s           int
+	input_file  string
+	output_file string
+}
+
+func (opt *Options) ParseOptions(c, d, u bool, f, s int, i bool) {
+
+	// check if -c -d -u used at the same time
+	count := 0
+	for _, flag := range []bool{c, d, u} {
+		if flag {
+			count++
+		}
+	}
+
+	if count > 1 {
+		panic("Wrong usage!\n\nCorrect: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
+	}
+
+	opt.c = c
+	opt.d = d
+	opt.u = u
+	opt.i = i
+	opt.f = f
+	opt.s = s
+}
+
 // returns the result of comparing to strings according to given arguments
 func stringsAreEqual(str1, str2 string, f, s int, ignore_reg bool) bool {
 	// -i
@@ -134,12 +167,12 @@ func pickLines(data map[string]int, index_map map[int]string, c, d, u bool) []st
 	return result
 }
 
-func GetOutput(input []string, c, d, u bool, f, s int, i bool) []string {
+func FindUnique(input []string, args Options) []string {
 
 	data := make(map[string]int)
 	// get index map for the lines
-	index_map := fillMap(data, input, f, s, i)
+	index_map := fillMap(data, input, args.f, args.s, args.i)
 	// get strings in the right order according to the mode chosen (-c | -d | -u)
-	output := pickLines(data, index_map, c, d, u)
+	output := pickLines(data, index_map, args.c, args.d, args.u)
 	return output
 }
