@@ -99,7 +99,7 @@ func pickLines(data map[string]int, indexMap map[int]string, c, d, u bool) []str
 	}
 	// if non-unique mode
 	if d {
-		result = countLines(indexValues, data, indexMap)
+		result = duplicateOnly(indexValues, data, indexMap)
 	}
 	// if unique mode
 	if u {

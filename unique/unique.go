@@ -1,6 +1,8 @@
 package unique
 
-import "github.com/lecrank/bashnya/parse"
+import (
+	"github.com/lecrank/bashnya/parse"
+)
 
 func FindUnique(input []string, args parse.Options) []string {
 

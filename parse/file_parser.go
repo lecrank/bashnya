@@ -1,6 +1,8 @@
 package parse
 
-import "flag"
+import (
+	"flag"
+)
 
 type Files struct {
 	InputFile  string

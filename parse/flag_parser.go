@@ -19,6 +19,7 @@ type Options struct {
 func GetFlags(flags Options) Options {
 	var c, d, u, i bool
 	var f, s int
+	//var input_file string //, output_file string
 
 	flag.BoolVar(&c, "c", false, "occurrence count")
 	flag.BoolVar(&d, "d", false, "non-unique only")

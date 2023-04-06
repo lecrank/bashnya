@@ -1,29 +1,27 @@
 package main
 
 import (
-	"github.com/lecrank/bashnya/io_stream"
 	"github.com/lecrank/bashnya/parse"
+	"github.com/lecrank/bashnya/read_data"
 	"github.com/lecrank/bashnya/unique"
+	"github.com/lecrank/bashnya/write_data"
 )
 
 func main() {
-
-	// init the struct of files
-	files := parse.Files{}
-	files.Fill()
-
-	reader := io_stream.SetReader(files.InputFile)
-	writer := io_stream.SetWriter(files.OutputFile)
 
 	// fill the struct with arguments
 	options := parse.Options{}
 	flags := parse.GetFlags(options)
 
+	// fill the file struct
+	files := parse.Files{}
+	files.Fill()
+
 	// read lines from input stream
-	inputData := readdata.read(reader)
+	inputData := read_data.ReadFile(files.InputFile)
 
 	// get result
 	output_data := unique.FindUnique(inputData, flags)
 
-	writedata.write(writer, output_data)
+	write_data.WriteFile(files.OutputFile, output_data)
 }

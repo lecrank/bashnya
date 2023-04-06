@@ -1,6 +1,7 @@
 package unique
 
 import (
+	"fmt"
 	"strings"
 	"unicode/utf8"
 )
@@ -59,17 +60,18 @@ func cutFields(amount int, s1, s2 *string) bool {
 	if len(strings.Split(*s2, " ")) < 2 {
 		noFields2 = true
 	}
-
+	fmt.Println("here")
 	if amount >= len(strings.Split(*s1, " ")) && amount >= len(strings.Split(*s2, " ")) && !noFields1 && !noFields2 {
-		preResult = true
+		return true
 	}
 
 	if !noFields1 {
 		*s1 = strings.Join(strings.Split(*s1, " ")[amount:], " ")
 	}
+	fmt.Println("again")
 	if !noFields2 {
 		*s2 = strings.Join(strings.Split(*s2, " ")[amount:], " ")
 	}
-
+	fmt.Println("after s2")
 	return preResult
 }
