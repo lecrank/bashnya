@@ -48,10 +48,6 @@ func cutSymbols(amount int, s1, s2 *string) {
 // cuts given strings by <amount> fields and returns true if the both strings got empty (== strings are equal)
 func cutFields(amount int, s1, s2 *string) {
 
-	// fmt.Println("Strings:", *s1, "|||", *s2)
-	// fmt.Println("len1:", len(strings.Split(*s1, " ")), "len2:", len(strings.Split(*s2, " ")))
-
-	// if has fields
 	if len(strings.Split(*s1, " ")) > 1 {
 		if amount < len(strings.Split(*s1, " ")) {
 			*s1 = strings.Join(strings.Split(*s1, " ")[amount:], " ")
