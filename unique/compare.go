@@ -1,7 +1,6 @@
 package unique
 
 import (
-	"fmt"
 	"strings"
 	"unicode/utf8"
 )
@@ -16,9 +15,7 @@ func stringsAreEqual(str1, str2 string, f, s int, ignore_reg bool) bool {
 	}
 	// -f
 	if f > 0 {
-		if cutFields(f, &str1, &str2) {
-			return true
-		}
+		cutFields(f, &str1, &str2)
 	}
 	// -s
 	if s > 0 {
@@ -49,29 +46,25 @@ func cutSymbols(amount int, s1, s2 *string) {
 }
 
 // cuts given strings by <amount> fields and returns true if the both strings got empty (== strings are equal)
-func cutFields(amount int, s1, s2 *string) bool {
+func cutFields(amount int, s1, s2 *string) {
 
-	var noFields1, noFields2 bool
-	var preResult bool
+	// fmt.Println("Strings:", *s1, "|||", *s2)
+	// fmt.Println("len1:", len(strings.Split(*s1, " ")), "len2:", len(strings.Split(*s2, " ")))
 
-	if len(strings.Split(*s1, " ")) < 2 {
-		noFields1 = true
-	}
-	if len(strings.Split(*s2, " ")) < 2 {
-		noFields2 = true
-	}
-	fmt.Println("here")
-	if amount >= len(strings.Split(*s1, " ")) && amount >= len(strings.Split(*s2, " ")) && !noFields1 && !noFields2 {
-		return true
+	// if has fields
+	if len(strings.Split(*s1, " ")) > 1 {
+		if amount < len(strings.Split(*s1, " ")) {
+			*s1 = strings.Join(strings.Split(*s1, " ")[amount:], " ")
+		} else {
+			*s1 = ""
+		}
 	}
 
-	if !noFields1 {
-		*s1 = strings.Join(strings.Split(*s1, " ")[amount:], " ")
+	if len(strings.Split(*s2, " ")) > 1 {
+		if amount < len(strings.Split(*s2, " ")) {
+			*s2 = strings.Join(strings.Split(*s2, " ")[amount:], " ")
+		} else {
+			*s2 = ""
+		}
 	}
-	fmt.Println("again")
-	if !noFields2 {
-		*s2 = strings.Join(strings.Split(*s2, " ")[amount:], " ")
-	}
-	fmt.Println("after s2")
-	return preResult
 }

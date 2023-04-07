@@ -58,19 +58,40 @@ func TestFindUnique(t *testing.T) {
 				"Th Rove music.",
 				"LK Gove music.",
 				"",
+				"Jq Dove music of KarTik.",
+				"ql Zove music of Kartik.",
+				"Thanks."},
+			flags:          parse.Options{U: true, F: 5, S: 1},
+			expectedResult: []string{"Thanks."},
+		}, {
+			name: "with -d -s 100",
+			input: []string{"Iq Pove music.",
+				"Th Rove music.",
+				"LK Gove music.",
+				"",
 				"Jq Dove music of Kartik.",
 				"ql Zove music of Kartik.",
 				"Thanks."},
-			flags:          parse.Options{D: true, F: 1, S: 1},
-			expectedResult: []string{"", "Thanks."},
+			flags:          parse.Options{S: 100},
+			expectedResult: []string{"Iq Pove music."},
+		}, {
+			name: "with -s 17",
+			input: []string{"Iq Pove music.",
+				"Th Rove music.",
+				"LK Gove music.",
+				"",
+				"Jq Dove music of Kartik.",
+				"ql Zove music of Kartik.",
+				"Thanks."},
+			flags: parse.Options{S: 17, I: true},
+			expectedResult: []string{"Iq Pove music.",
+				"Jq Dove music of Kartik."},
 		},
 	}
 	// Begin test
 	for _, test := range testTable {
 		actual := FindUnique(test.input, test.flags)
 		res := assert.Equal(t, test.expectedResult, actual, test.name)
-
-		//assert.Nil and assert.NotNil to assert that the current test case does not or does expect an error respectively.
 
 		assert.True(t, res)
 	}
