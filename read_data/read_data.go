@@ -3,19 +3,12 @@ package read_data
 import (
 	"bufio"
 	"io"
-	"log"
 	"os"
 	"strings"
 )
 
 type Reader interface {
 	ReadString(delim byte) (string, error)
-}
-
-func checkError(err error) {
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
 }
 
 func readLines(rd Reader) ([]string, error) {
@@ -44,7 +37,10 @@ func ReadFile(file string) ([]string, error) {
 	if file != "" {
 		readFile, err := os.Open(file)
 		defer readFile.Close()
-		checkError(err)
+
+		if err != nil {
+			return []string{""}, err
+		}
 
 		reader = bufio.NewReader(readFile)
 	}

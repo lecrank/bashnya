@@ -1,11 +1,19 @@
 package main
 
 import (
+	"log"
+
 	"github.com/lecrank/bashnya/parse"
 	"github.com/lecrank/bashnya/read_data"
 	"github.com/lecrank/bashnya/unique"
 	"github.com/lecrank/bashnya/write_data"
 )
+
+func checkError(err error) {
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+}
 
 func main() {
 
@@ -17,11 +25,11 @@ func main() {
 
 	// read lines from input stream
 	inputData, err := read_data.ReadFile(files.InputFile)
-	write_data.CheckError(err)
+	checkError(err)
 
 	// get result
 	output_data := unique.FindUnique(inputData, options)
 
 	err = write_data.WriteFile(files.OutputFile, output_data)
-	write_data.CheckError(err)
+	checkError(err)
 }
