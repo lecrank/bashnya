@@ -18,7 +18,7 @@ func checkError(err error) {
 	}
 }
 
-func readLines(rd Reader) []string {
+func readLines(rd Reader) ([]string, error) {
 	lines := make([]string, 0)
 	// read lines
 	for {
@@ -28,14 +28,14 @@ func readLines(rd Reader) []string {
 
 		if err == io.EOF {
 			break
-		} else {
-			checkError(err)
+		} else if err != nil {
+			return lines, err
 		}
 	}
-	return lines
+	return lines, nil
 }
 
-func ReadFile(file string) []string {
+func ReadFile(file string) ([]string, error) {
 
 	// set default reader
 	reader := bufio.NewReader(os.Stdin)

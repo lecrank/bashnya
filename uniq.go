@@ -10,18 +10,18 @@ import (
 func main() {
 
 	// fill the struct with arguments
-	options := parse.Options{}
-	flags := parse.GetFlags(options)
+	options := parse.OptionsGiven()
 
 	// fill the file struct
-	files := parse.Files{}
-	files.Fill()
+	files := parse.GivenFiles()
 
 	// read lines from input stream
-	inputData := read_data.ReadFile(files.InputFile)
+	inputData, err := read_data.ReadFile(files.InputFile)
+	write_data.CheckError(err)
 
 	// get result
-	output_data := unique.FindUnique(inputData, flags)
+	output_data := unique.FindUnique(inputData, options)
 
-	write_data.WriteFile(files.OutputFile, output_data)
+	err = write_data.WriteFile(files.OutputFile, output_data)
+	write_data.CheckError(err)
 }

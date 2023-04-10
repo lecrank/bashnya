@@ -3,17 +3,19 @@ package unique
 import (
 	"sort"
 	"strconv"
+
+	"github.com/lecrank/bashnya/parse"
 )
 
 // map(line => occurrence count)
-func fillMap(lines map[string]int, text []string, f, s int, i bool) map[int]string {
+func fillMap(lines map[string]int, text []string, args parse.Options) map[int]string {
 	// map(index of line => line)
 	index := make(map[int]string)
 	counter := 0
 	for _, elem := range text {
 		flag := false
 		for line := range lines {
-			if stringsAreEqual(elem, line, f, s, i) {
+			if stringsAreEqual(elem, line, args.F, args.S, args.I) {
 				flag = true
 				lines[line]++
 			}
@@ -83,7 +85,7 @@ func regularMode(idValues []int, data map[string]int, idMap map[int]string) []st
 }
 
 // returns the appropriate lines
-func pickLines(data map[string]int, indexMap map[int]string, c, d, u bool) []string {
+func pickLines(data map[string]int, indexMap map[int]string, args parse.Options) []string {
 	indexValues := make([]int, 0, len(data))
 
 	// sort keys of the index map (index of line => line) to access data map (line => count) in the rigth order
@@ -94,19 +96,13 @@ func pickLines(data map[string]int, indexMap map[int]string, c, d, u bool) []str
 
 	result := []string{"error"}
 	// if count mode
-	if c {
+	if args.C {
 		result = countLines(indexValues, data, indexMap)
-	}
-	// if non-unique mode
-	if d {
+	} else if args.D { // if non-unique mode
 		result = duplicateOnly(indexValues, data, indexMap)
-	}
-	// if unique mode
-	if u {
+	} else if args.U { // if unique mode
 		result = uniqueOnly(indexValues, data, indexMap)
-	}
-	// if regular mode
-	if !c && !d && !u {
+	} else if !args.C && !args.D && !args.U { // if regular mode
 		result = regularMode(indexValues, data, indexMap)
 	}
 	return result

@@ -6,14 +6,12 @@ import (
 )
 
 type Options struct {
-	C          bool   // count mode
-	D          bool   // duplicate mode
-	U          bool   // unique mode
-	I          bool   // ignore register flag
-	F          int    // ignored fields count
-	S          int    // ignored symbols count
-	InputFile  string // input file name
-	IutputFile string // output file name
+	C bool // count mode
+	D bool // duplicate mode
+	U bool // unique mode
+	I bool // ignore register flag
+	F int  // ignored fields count
+	S int  // ignored symbols count
 }
 
 func GetFlags(flags Options) Options {
@@ -54,4 +52,10 @@ func (opt *Options) ParseOptions(c, d, u bool, f, s int, i bool) {
 	opt.I = i
 	opt.F = f
 	opt.S = s
+}
+
+func OptionsGiven() Options {
+	options := Options{}
+	flags := GetFlags(options)
+	return flags
 }

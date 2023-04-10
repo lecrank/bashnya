@@ -9,20 +9,20 @@ type Files struct {
 	OutputFile string
 }
 
-func (filestruct *Files) Fill() {
-	var inputFile, outputFile string
-
+func (filestruct *Files) getFiles() {
 	// check files
 	files := flag.Args()
 
 	if len(files) == 1 {
-		inputFile = files[0]
-	} else {
-		if len(files) == 2 {
-			inputFile = files[0]
-			outputFile = files[1]
-		}
+		filestruct.InputFile = files[0]
+	} else if len(files) == 2 {
+		filestruct.InputFile = files[0]
+		filestruct.OutputFile = files[1]
 	}
-	filestruct.InputFile = inputFile
-	filestruct.OutputFile = outputFile
+}
+
+func GivenFiles() Files {
+	files := Files{}
+	files.getFiles()
+	return files
 }

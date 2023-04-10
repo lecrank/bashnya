@@ -15,7 +15,8 @@ func stringsAreEqual(str1, str2 string, f, s int, ignore_reg bool) bool {
 	}
 	// -f
 	if f > 0 {
-		cutFields(f, &str1, &str2)
+		cutFields(f, &str1)
+		cutFields(f, &str2)
 	}
 	// -s
 	if s > 0 {
@@ -46,21 +47,13 @@ func cutSymbols(amount int, s1, s2 *string) {
 }
 
 // cuts given strings by <amount> fields and returns true if the both strings got empty (== strings are equal)
-func cutFields(amount int, s1, s2 *string) {
+func cutFields(amount int, str *string) {
 
-	if len(strings.Split(*s1, " ")) > 1 {
-		if amount < len(strings.Split(*s1, " ")) {
-			*s1 = strings.Join(strings.Split(*s1, " ")[amount:], " ")
+	if len(strings.Split(*str, " ")) > 1 {
+		if amount < len(strings.Split(*str, " ")) {
+			*str = strings.Join(strings.Split(*str, " ")[amount:], " ")
 		} else {
-			*s1 = ""
-		}
-	}
-
-	if len(strings.Split(*s2, " ")) > 1 {
-		if amount < len(strings.Split(*s2, " ")) {
-			*s2 = strings.Join(strings.Split(*s2, " ")[amount:], " ")
-		} else {
-			*s2 = ""
+			*str = ""
 		}
 	}
 }
