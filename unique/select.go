@@ -15,7 +15,7 @@ func fillMap(lines map[string]int, text []string, args parse.Options) map[int]st
 	for _, elem := range text {
 		flag := false
 		for line := range lines {
-			if stringsAreEqual(elem, line, args.F, args.S, args.I) {
+			if stringsAreEqual(elem, line, args) {
 				flag = true
 				lines[line]++
 			}

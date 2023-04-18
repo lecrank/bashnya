@@ -18,10 +18,11 @@ func checkError(err error) {
 func main() {
 
 	// fill the struct with arguments
-	options := parse.OptionsGiven()
+	options, err := parse.OptionsGiven()
+	checkError(err)
 
 	// fill the file struct
-	files := parse.GivenFiles()
+	files := *(parse.NewFiles())
 
 	// read lines from input stream
 	inputData, err := read_data.ReadFile(files.InputFile)

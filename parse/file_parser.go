@@ -21,8 +21,8 @@ func (filestruct *Files) getFiles() {
 	}
 }
 
-func GivenFiles() Files {
+func NewFiles() *Files {
 	files := Files{}
 	files.getFiles()
-	return files
+	return &files
 }

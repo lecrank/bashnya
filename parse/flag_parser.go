@@ -1,8 +1,8 @@
 package parse
 
 import (
+	"errors"
 	"flag"
-	"log"
 )
 
 type Options struct {
@@ -14,7 +14,7 @@ type Options struct {
 	S int  // ignored symbols count
 }
 
-func GetFlags(flags Options) Options {
+func GetFlags(flags Options) (Options, error) {
 	var c, d, u, i bool
 	var f, s int
 	//var input_file string //, output_file string
@@ -27,12 +27,14 @@ func GetFlags(flags Options) Options {
 	flag.BoolVar(&i, "i", false, "ignore register")
 	flag.Parse()
 
-	flags.ParseOptions(c, d, u, f, s, i)
-
-	return flags
+	err := flags.parseOptions(c, d, u, f, s, i)
+	if err != nil {
+		return flags, err
+	}
+	return flags, nil
 }
 
-func (opt *Options) ParseOptions(c, d, u bool, f, s int, i bool) {
+func (opt *Options) parseOptions(c, d, u bool, f, s int, i bool) error {
 
 	// check if -c -d -u used simultaneously
 	count := 0
@@ -43,7 +45,7 @@ func (opt *Options) ParseOptions(c, d, u bool, f, s int, i bool) {
 	}
 
 	if count > 1 {
-		log.Fatal("Wrong usage!\n\nCorrect: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
+		return errors.New("Wrong usage!\n\nCorrect: uniq [-c | -d | -u] [-i] [-f num] [-s chars] [input_file [output_file]]")
 	}
 
 	opt.C = c
@@ -52,10 +54,15 @@ func (opt *Options) ParseOptions(c, d, u bool, f, s int, i bool) {
 	opt.I = i
 	opt.F = f
 	opt.S = s
+
+	return nil
 }
 
-func OptionsGiven() Options {
+func OptionsGiven() (Options, error) {
 	options := Options{}
-	flags := GetFlags(options)
-	return flags
+	flags, err := GetFlags(options)
+	if err != nil {
+		return flags, err
+	}
+	return flags, nil
 }

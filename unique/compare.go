@@ -3,24 +3,26 @@ package unique
 import (
 	"strings"
 	"unicode/utf8"
+
+	"github.com/lecrank/bashnya/parse"
 )
 
 // returns the result of comparing to strings according to given arguments
-func stringsAreEqual(str1, str2 string, f, s int, ignore_reg bool) bool {
+func stringsAreEqual(str1, str2 string, opt parse.Options) bool {
 
 	// -i
-	if ignore_reg {
+	if opt.I {
 		str1 = strings.ToUpper(str1)
 		str2 = strings.ToUpper(str2)
 	}
 	// -f
-	if f > 0 {
-		cutFields(f, &str1)
-		cutFields(f, &str2)
+	if opt.F > 0 {
+		cutFields(opt.F, &str1)
+		cutFields(opt.F, &str2)
 	}
 	// -s
-	if s > 0 {
-		cutSymbols(s, &str1, &str2)
+	if opt.S > 0 {
+		cutSymbols(opt.S, &str1, &str2)
 	}
 
 	return str1 == str2
