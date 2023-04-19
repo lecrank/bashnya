@@ -4,11 +4,7 @@ import (
 	"os"
 )
 
-type Writer interface {
-	Write(b []byte) (n int, err error)
-}
-
-func writeLines(writer Writer, data []string) error {
+func writeLines(writer *os.File, data []string) error {
 
 	for _, line := range data {
 		_, err := writer.Write([]byte(line + "\n"))

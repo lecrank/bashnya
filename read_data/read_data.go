@@ -7,11 +7,7 @@ import (
 	"strings"
 )
 
-type Reader interface {
-	ReadString(delim byte) (string, error)
-}
-
-func readLines(rd Reader) ([]string, error) {
+func readLines(rd *bufio.Reader) ([]string, error) {
 	lines := make([]string, 0)
 	// read lines
 	for {
